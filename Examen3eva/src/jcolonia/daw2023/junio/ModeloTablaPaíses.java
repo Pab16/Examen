@@ -50,7 +50,7 @@ class ModeloTablaPaíses extends DefaultTableModel {
 	 * @param nuevoPaís el país a incorporar
 	 */
 	public void addRow(País nuevoPaís) {
-		addRow(new Object[] { Integer.valueOf(0), nuevoPaís.nombre(), nuevoPaís.capital(), nuevoPaís.idioma() });
+		addRow(new Object[] { nuevoPaís.número(), nuevoPaís.nombre(), nuevoPaís.capital(), nuevoPaís.idioma() });
 	}
 
 	/**
