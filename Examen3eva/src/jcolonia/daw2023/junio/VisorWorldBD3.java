@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -63,6 +64,8 @@ public class VisorWorldBD3 extends JFrame {
 	private JMenu menuArchivo;
 	private JMenuItem itemSalir;
 	private JFrame ventanaPrincipal;
+	private JButton botonConsulta;
+	private JTextField textoPais;
 
 	/**
 	 * Lanza la aplicación. Establece la apariencia general de la ventana y registra
@@ -213,6 +216,8 @@ public class VisorWorldBD3 extends JFrame {
 			panelBotones = new JPanel();
 			panelBotones.setBorder(new EmptyBorder(0, 0, 0, 0));
 			panelBotones.setLayout(new GridLayout(0, 1, 0, 0));
+			panelBotones.add(getTextoPais());
+			panelBotones.add(getBotonConsulta());
 			panelBotones.add(getBotónInsertar());
 		}
 		return panelBotones;
@@ -270,6 +275,20 @@ public class VisorWorldBD3 extends JFrame {
 	private class ItemSalirActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			ventanaPrincipal.dispose();
+		}
+	}
+	
+	
+	private class BotonConsultaActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			try {
+				control.consultaPaís(modeloPaíses, getTextoPais().getText());
+				mostrarEstado("");
+			} catch (IOException ex) {
+				mostrarAviso(ex.getMessage());
+			} catch (AccesoBDExcepción ex) {
+				mostrarEstado(ex.getMessage());
+			}
 		}
 	}
 	
@@ -380,5 +399,31 @@ public class VisorWorldBD3 extends JFrame {
 			itemSalir.addActionListener(new ItemSalirActionListener());
 		}
 		return itemSalir;
+	}
+	
+	/**
+	 * Botón de consulta de un país.
+	 * 
+	 * @return
+	 */
+	private JButton getBotonConsulta() {
+		if (botonConsulta == null) {
+			botonConsulta = new JButton("Buscar país");
+			botonConsulta.addActionListener(new BotonConsultaActionListener());
+		}
+		return botonConsulta;
+	}
+	
+	/**
+	 * Zona donde escribir el país a buscar.
+	 * 
+	 * @return
+	 */
+	private JTextField getTextoPais() {
+		if (textoPais == null) {
+			textoPais = new JTextField();
+			textoPais.setColumns(10);
+		}
+		return textoPais;
 	}
 }

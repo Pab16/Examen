@@ -65,4 +65,11 @@ public class ControlWorldBD {
 			modelo.addRow(elemento);
 		}
 	}
+	
+	public void consultaPaís(ModeloTablaPaíses modelo, String nombre) throws IOException {
+		try (AccesoBD bd = new AccesoBD(NOMBRE_RUTA_CONFIG)){
+			bd.consultaPais(nombre);
+			modelo.addRow(bd.getPaís());
+		}
+	}
 }

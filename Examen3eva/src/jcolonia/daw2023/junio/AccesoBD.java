@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -46,7 +47,11 @@ public class AccesoBD implements Closeable {
 
 	/** Nombre/ruta del archivo de la base de datos. */
 	private String rutaArchivo;
-
+	
+	/** País a consultar */
+	private País nuevoPais;
+	
+	private static int id;
 	/**
 	 * Recoge el nombre/ruta del archivo de la base de datos.
 	 * 
@@ -56,6 +61,7 @@ public class AccesoBD implements Closeable {
 		conexión = null;
 		configuración = null;
 		this.rutaArchivo = rutaArchivo;
+		id = 0;
 	}
 
 	/**
@@ -232,6 +238,63 @@ public class AccesoBD implements Closeable {
 			throw new AccesoBDExcepción("Error E/S", ex);
 		}
 		return configuraciónLeída;
+	}
+	
+	/**
+	 * Busca un pais en la base de datos y devuelve sus características.
+	 * @param pais
+	 * @throws BDException 
+	 */
+	public void consultaPais(String pais) throws AccesoBDExcepción {
+		String fuente = "jdbc:sqlite:world2.db";
+		String consulta = String.format("SELECT * from Country WHERE Name LIKE ?");
+		
+		try(	Connection conexión = DriverManager.getConnection(fuente);
+				Statement sentenciaSQL = conexión.createStatement();
+				PreparedStatement preparaciónSQL = conexión.prepareStatement(consulta);
+				){
+			
+			preparaciónSQL.setString(1, pais);
+			ResultSet loteDatos = preparaciónSQL.executeQuery();
+			sentenciaSQL.setQueryTimeout(5);
+			rellenarPais(loteDatos);
+			
+
+		}catch(SQLException ex) {
+			System.err.printf("Error: %s \n--%s--\n%s",
+					"No se ha creado la base de datos SQLite",
+					ex.getLocalizedMessage());
+			ex.getStackTrace();
+			System.exit(1);
+		}	
+	}
+	
+	/**
+	 * Rellena la lista con un conjunto de características de un país: nombre, capital e idioma 
+	 * 
+	 * @param loteDatos
+	 * @throws BDException
+	 * @throws SQLException
+	 */
+	public void rellenarPais(ResultSet resultado) throws AccesoBDExcepción, SQLException {
+		String nombre = "", capital = "", idioma = "";
+		int número = ++id;
+		while (resultado.next()) {
+			nombre = resultado.getString("Name");
+			capital = resultado.getString("Capital");
+			idioma += resultado.getString("Language");
+			idioma += " ";
+		}
+		
+		if(nombre != "") {
+			nuevoPais = new País(número, nombre, capital, idioma);
+		}else {
+			throw new AccesoBDExcepción("¡País no encontrado!");
+		}
+	}
+	
+	public País getPaís() {
+		return nuevoPais;
 	}
 
 }
