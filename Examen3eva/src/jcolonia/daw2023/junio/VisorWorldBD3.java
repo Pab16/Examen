@@ -60,6 +60,9 @@ public class VisorWorldBD3 extends JFrame {
 	private JMenuBar barraMenu;
 	private JMenu menuAyuda;
 	private JMenuItem itemMostrarCreditos;
+	private JMenu menuArchivo;
+	private JMenuItem itemSalir;
+	private JFrame ventanaPrincipal;
 
 	/**
 	 * Lanza la aplicación. Establece la apariencia general de la ventana y registra
@@ -95,6 +98,7 @@ public class VisorWorldBD3 extends JFrame {
 	 */
 	public VisorWorldBD3() {
 		ventanaPreparada = false;
+		ventanaPrincipal = this;
 		control = new ControlWorldBD();
 		initialize();
 	}
@@ -261,6 +265,15 @@ public class VisorWorldBD3 extends JFrame {
 	}
 	
 	/**
+	 * Al pulsar el botón se cerrará la ventana.
+	 */
+	private class ItemSalirActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			ventanaPrincipal.dispose();
+		}
+	}
+	
+	/**
 	 * Barra de texto dónde se mostrará información relvante
 	 * 
 	 * @return
@@ -311,6 +324,7 @@ public class VisorWorldBD3 extends JFrame {
 		if (barraMenu == null) {
 			barraMenu = new JMenuBar();
 			barraMenu.add(getMenuAyuda());
+			barraMenu.add(getMenuArchivo());
 		}
 		return barraMenu;
 	}
@@ -339,5 +353,32 @@ public class VisorWorldBD3 extends JFrame {
 			itemMostrarCreditos.addActionListener(new ItemMostrarCreditosActionListener());
 		}
 		return itemMostrarCreditos;
+	}
+	
+	/**
+	 * Segundo submenú
+	 * 
+	 * @return
+	 */
+	private JMenu getMenuArchivo() {
+		if (menuArchivo == null) {
+			menuArchivo = new JMenu("Archivo");
+			menuArchivo.setMnemonic(KeyEvent.VK_A);
+			menuArchivo.add(getItemSalir());
+		}
+		return menuArchivo;
+	}
+	
+	/**
+	 * Item del submenú "Archivo" que te permitirá cerrar la ventana.
+	 * 
+	 * @return
+	 */
+	private JMenuItem getItemSalir() {
+		if (itemSalir == null) {
+			itemSalir = new JMenuItem("Salir del programa");
+			itemSalir.addActionListener(new ItemSalirActionListener());
+		}
+		return itemSalir;
 	}
 }
