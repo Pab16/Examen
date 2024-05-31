@@ -19,6 +19,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 /**
  * Aplicación de ventanas con una única ventana principal y una tabla de datos
@@ -53,6 +57,9 @@ public class VisorWorldBD3 extends JFrame {
 	/** Indicador de preparación de ventana finalizada. */
 	private boolean ventanaPreparada;
 	private JTextField textoEstado;
+	private JMenuBar barraMenu;
+	private JMenu menuAyuda;
+	private JMenuItem itemMostrarCreditos;
 
 	/**
 	 * Lanza la aplicación. Establece la apariencia general de la ventana y registra
@@ -99,6 +106,7 @@ public class VisorWorldBD3 extends JFrame {
 		setTitle("Ventana países");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 573, 411);
+		setJMenuBar(getMenuBar_1());
 		panelGeneral = new JPanel();
 		panelGeneral.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -243,6 +251,20 @@ public class VisorWorldBD3 extends JFrame {
 			}
 		}
 	}
+	/**
+	 * Se mostrará un popup con la información del autor y la fecha.
+	 */
+	private class ItemMostrarCreditosActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			mostrarPopup("(c) Pablo Arranz 2024");
+		}
+	}
+	
+	/**
+	 * Barra de texto dónde se mostrará información relvante
+	 * 
+	 * @return
+	 */
 	private JTextField getTextoEstado() {
 		if (textoEstado == null) {
 			textoEstado = new JTextField();
@@ -270,5 +292,52 @@ public class VisorWorldBD3 extends JFrame {
 	public void mostrarAviso(String mensaje) {
 		getTextoEstado().setForeground((new Color(255, 0, 0)));
 		getTextoEstado().setText(mensaje);
+	}
+	
+	/**
+	 * Saca un popup por pantalla con el mensaje dado.
+	 * 
+	 * @param mensaje
+	 */
+	public void mostrarPopup(String mensaje) {
+		JOptionPane.showMessageDialog(getPanelPestañas(), mensaje, "Info", JOptionPane.INFORMATION_MESSAGE);
+	}
+	/**
+	 * Barra de menú.
+	 * 
+	 * @return
+	 */
+	private JMenuBar getMenuBar_1() {
+		if (barraMenu == null) {
+			barraMenu = new JMenuBar();
+			barraMenu.add(getMenuAyuda());
+		}
+		return barraMenu;
+	}
+	
+	/**
+	 * Submenú de ayuda del menú.
+	 * 
+	 * @return
+	 */
+	private JMenu getMenuAyuda() {
+		if (menuAyuda == null) {
+			menuAyuda = new JMenu("Ayuda");
+			menuAyuda.setMnemonic(KeyEvent.VK_U);
+			menuAyuda.add(getItemMostrarCreditos());
+		}
+		return menuAyuda;
+	}
+	
+	/**
+	 * Opción de mostrar los créditos del submenú.
+	 * @return
+	 */
+	private JMenuItem getItemMostrarCreditos() {
+		if (itemMostrarCreditos == null) {
+			itemMostrarCreditos = new JMenuItem("Créditos");
+			itemMostrarCreditos.addActionListener(new ItemMostrarCreditosActionListener());
+		}
+		return itemMostrarCreditos;
 	}
 }
