@@ -17,6 +17,8 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 /**
  * Aplicación de ventanas con una única ventana principal y una tabla de datos
@@ -50,6 +52,7 @@ public class VisorWorldBD3 extends JFrame {
 
 	/** Indicador de preparación de ventana finalizada. */
 	private boolean ventanaPreparada;
+	private JTextField textoEstado;
 
 	/**
 	 * Lanza la aplicación. Establece la apariencia general de la ventana y registra
@@ -102,6 +105,7 @@ public class VisorWorldBD3 extends JFrame {
 		setContentPane(panelGeneral);
 		panelGeneral.setLayout(new BorderLayout(0, 0));
 		panelGeneral.add(getPanelPestañas(), BorderLayout.CENTER);
+		panelGeneral.add(getTextoEstado(), BorderLayout.SOUTH);
 	}
 
 	/**
@@ -231,5 +235,33 @@ public class VisorWorldBD3 extends JFrame {
 			control.cargarDatos();
 			control.sincronizarListaPaíses(modelo);
 		}
+	}
+	private JTextField getTextoEstado() {
+		if (textoEstado == null) {
+			textoEstado = new JTextField();
+			textoEstado.setHorizontalAlignment(SwingConstants.CENTER);
+			textoEstado.setColumns(10);
+		}
+		return textoEstado;
+	}
+	
+	/**
+	 * Mostrará el mensaje dado por la barra de estado. 
+	 * 
+	 * @param mensaje
+	 */
+	public void mostrarEstado(String mensaje) {
+		getTextoEstado().setForeground((new Color(0, 0, 0)));
+		getTextoEstado().setText(mensaje);
+	}
+	
+	/**
+	 * Mostrará el aviso por la barra de estado.
+	 * 
+	 * @param mensaje
+	 */
+	public void mostrarAviso(String mensaje) {
+		getTextoEstado().setForeground((new Color(255, 0, 0)));
+		getTextoEstado().setText(mensaje);
 	}
 }
