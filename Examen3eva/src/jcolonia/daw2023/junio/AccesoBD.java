@@ -261,11 +261,10 @@ public class AccesoBD implements Closeable {
 			
 
 		}catch(SQLException ex) {
-			System.err.printf("Error: %s \n--%s--\n%s",
+			String mensaje = String.format("Error: %s \n--%s--\n%s",
 					"No se ha creado la base de datos SQLite",
 					ex.getLocalizedMessage());
-			ex.getStackTrace();
-			System.exit(1);
+			throw new SQLException(mensaje, ex);
 		}	
 	}
 	

@@ -283,6 +283,7 @@ public class VisorWorldBD3 extends JFrame {
 	private class BotonConsultaActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			try {
+				modeloPaíses.vaciar();
 				control.consultaPaís(modeloPaíses, getTextoPais().getText());
 				mostrarEstado("");
 			} catch (IOException ex) {
