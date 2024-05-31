@@ -232,8 +232,15 @@ public class VisorWorldBD3 extends JFrame {
 		 */
 		public void actionPerformed(ActionEvent ev) {
 			ModeloTablaPaíses modelo = getModeloPaíses();
+			String mensaje;
+			try {
 			control.cargarDatos();
+			mensaje = String.format("Se han cargado %d datos.", control.consultarTamaño());
 			control.sincronizarListaPaíses(modelo);
+			mostrarEstado(mensaje);
+			} catch(AccesoBDExcepción ex) {
+				mostrarAviso(ex.getMessage());
+			}
 		}
 	}
 	private JTextField getTextoEstado() {
