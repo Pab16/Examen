@@ -1,6 +1,7 @@
 package jcolonia.daw2023.junio;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -66,7 +67,7 @@ public class ControlWorldBD {
 		}
 	}
 	
-	public void consultaPaís(ModeloTablaPaíses modelo, String nombre) throws IOException {
+	public void consultaPaís(ModeloTablaPaíses modelo, String nombre) throws IOException, AccesoBDExcepción, SQLException {
 		try (AccesoBD bd = new AccesoBD(NOMBRE_RUTA_CONFIG)){
 			bd.consultaPais(nombre);
 			modelo.addRow(bd.getPaís());

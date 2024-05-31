@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -288,6 +289,11 @@ public class VisorWorldBD3 extends JFrame {
 				mostrarAviso(ex.getMessage());
 			} catch (AccesoBDExcepción ex) {
 				mostrarEstado(ex.getMessage());
+			} catch (SQLException ex) {
+				String mensaje = String.format("Error: %s \n--%s--\n%s",
+						"No se ha creado la base de datos SQLite",
+						ex.getLocalizedMessage());
+				mostrarAviso(mensaje);
 			}
 		}
 	}

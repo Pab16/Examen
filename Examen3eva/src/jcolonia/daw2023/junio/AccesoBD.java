@@ -243,9 +243,9 @@ public class AccesoBD implements Closeable {
 	/**
 	 * Busca un pais en la base de datos y devuelve sus características.
 	 * @param pais
-	 * @throws BDException 
+	 * @throws AccesoBDExcepción 
 	 */
-	public void consultaPais(String pais) throws AccesoBDExcepción {
+	public void consultaPais(String pais) throws AccesoBDExcepción, SQLException {
 		String fuente = "jdbc:sqlite:world2.db";
 		String consulta = String.format("SELECT * from Country WHERE Name LIKE ?");
 		
@@ -273,7 +273,7 @@ public class AccesoBD implements Closeable {
 	 * Rellena la lista con un conjunto de características de un país: nombre, capital e idioma 
 	 * 
 	 * @param loteDatos
-	 * @throws BDException
+	 * @throws AccesoBDExcepción
 	 * @throws SQLException
 	 */
 	public void rellenarPais(ResultSet resultado) throws AccesoBDExcepción, SQLException {
